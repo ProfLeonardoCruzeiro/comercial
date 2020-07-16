@@ -1,0 +1,11 @@
+alter table comvenda add constraint fk_comprodu_comforne
+foreign key(n_numeforne)
+references comforne(n_numeforne)
+on delete no action
+on update no action;
+
+alter table comvenda add constraint fk_comprodu_comvende
+foreign key(n_numevende)
+references comvende(n_numevende)
+on delete no action
+on update no action;
