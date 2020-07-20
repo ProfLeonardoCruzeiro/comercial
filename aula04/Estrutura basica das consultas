@@ -1,0 +1,20 @@
+select n_numeclien, c_codivenda, c_razaclien
+from comclien;
+
+select n_numeclien, c_codiclien, c_razaclien
+from comclien
+where c_codiclien = '0001';
+
+select n_numeclien, c_codiclien, c_razaclien
+from comclien
+where c_codiclien <> '0001';
+
+
+select n_numeclien, c_codiclien, c_razaclien
+from comclien
+where c_razaclien like 'L%';
+
+select distinct n_numeclien
+from comvenda;
+
+
