@@ -1,0 +1,5 @@
+## Inicio popula tabela Fornecedores
+
+insert into comforne values(1 ,'0001',  'DUN RITE LAWN MAINTENANCE'	   ,'DUN RITE LAWN MAINTENANCE LTDA'	,'(85) 7886-8837' );
+insert into comforne values(2 ,'0002',  'SEWFRO FABRICS'	           ,'SEWFRO FABRICS LTDA'	            ,'(91) 5171-8483' );
+## Fim popula tabela Fornecedores
