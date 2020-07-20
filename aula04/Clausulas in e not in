@@ -1,0 +1,12 @@
+#Para exemplificarmos, vamos escrever uma consulta para
+#retornar simultaneamente os clientes que possuem n_numeclien igual a 1 e 2.
+
+select c_codiclien, c_razaclien
+from comclien
+where n_numeclien in (1,2);
+
+#Ou podiamos consultar clientes que possuem o n_nnumeclien diferente de 1 e 2. Nesta ocasiao, devemos utilizar o not in. 
+
+select c_codiclien, c_razaclien
+from comclien
+where n_numeclien not in (1,2);
