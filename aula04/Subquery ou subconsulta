@@ -1,0 +1,7 @@
+#A principal retornara a razao social do cliente e vai comparar o n_numeclien que sera retornado pela subconsulta. Esta, por sua vez, retornara todos n_nnumeclien da tabela comvenda.
+
+select c_razaclien
+from comclien
+where n_numeclien in (select n_numeclien
+from comvenda
+where n_numeclien);
