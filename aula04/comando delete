@@ -1,0 +1,11 @@
+##Diferente do drop, ele deleta os registros das colunas do banco de dados. O drop e usado para excluir objetos do banco, como tabelas, colunas, views, procedures etc.);
+##enquanto, o delete deletara os registros das tabelas, podendo excluir apenas uma linha ou todos os registros, como voce desejar.
+
+delete from comclien
+where n_numeclien = 1;
+commit;
+
+##Agora, vamos deletar todos os registros da tabela de clientes.
+
+delete from comcilen;
+commit;
