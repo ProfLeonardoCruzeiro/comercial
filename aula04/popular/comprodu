@@ -1,0 +1,6 @@
+## Inicio popula tabela Produtos
+insert into comprodu values( 1	,	'123131',     'NOTEBOOK'	,'1251.29'  ,'A',	1  );
+insert into comprodu values( 2	,	'123223',     'SMARTPHONE','1242.21'  ,'A',	2  );
+insert into comprodu values( 3	,	'1231',     'DESKTOP'	,'1241.21'  ,'A',	1  );
+insert into comprodu values( 4	,	'142123',     'TELEVISÃO'	,'2564.92'  ,'A',	2  );
+insert into comprodu values( 5	,	'7684',     'DRONE'		,'2325.32'  ,'A',	1  );
