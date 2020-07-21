@@ -1,0 +1,28 @@
+Group by
+
+O comando SQL para fazer essa operacao de agregacao e o group by.
+Ele devera ser utilizado logo apos as clausulas de condicoes where ou and, e antes do order by, se a sua consulta possui-lo.
+
+select c_codiclien, c_razaclien
+from comclien, comvenda
+where comvenda.n_numeclien = comclien.n_numeclien
+group by c_codiclien, c_razaclien
+order by c_razaclien;
+
+Podemos utilizar uma outra funcao de agregacao chamada count() para contar os registros que estao agrupados. 
+Ela so pode ser utilizada na clausula select, pois contara os registros da coluna que esta sendo selecionada.
+
+select c_codiclien, c_razaclien, count(n_numevenda) Qtde
+from comclien, comvenda
+where comvenda.n_numeclien = comclien.n_numeclien
+group by c_codiclien, c_razaclien
+order by c_razaclien;
+
+Agora, em nosso projeto, temos a necessidade de fazer um relatorio que traga como resultado os clientes que tiveram mais do que duas vendas.
+Para isso, utilizaremos a funcao having count(), que sera a condicao para o seu count(). 
+
+select c_razaclien, count(n_numevenda)
+from comclien, comvenda
+where comvenda.n_numeclien = comclien.n_numeclien
+group by c_razaclien
+having count(n_numevenda) > 2;
