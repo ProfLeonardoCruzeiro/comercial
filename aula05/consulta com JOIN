@@ -1,0 +1,8 @@
+A maneira mais formal de escrever uma consulta com JOIN e como esta apresentado a seguir. 
+
+select c_codiclien codigo, c_razaclien razao_social,
+c_codivenda codi_venda
+from comvenda
+join comclien on
+comvenda.n_numeclien = comclien.n_numeclien
+order by c_razaclien;
