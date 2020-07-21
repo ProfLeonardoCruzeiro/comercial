@@ -1,0 +1,6 @@
+No SQL, tambem temos um comando para ordenar as consultas. Para isso, temos o order by. Ordenando pela razao social do cliente, o nosso codigo ficara da seguinte maneira:
+
+select c_codiclien, c_razaclien, c_codivenda Cod_Venda
+from comvenda, comclien
+where comvenda.n_numeclien = comclien.n_numeclien
+order by c_razaclien;
