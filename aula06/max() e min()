@@ -1,0 +1,5 @@
+select max(n_totavenda) maior_venda
+from comvenda;
+
+select min(n_totavenda) menor_venda, max(n_totavenda)
+maior_venda from comvenda;
