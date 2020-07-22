@@ -1,0 +1,8 @@
+No MySQL, podemos somar todos os valores de uma coluna utilizando a funcao sum(). Como exemplo, vamos somar os valores individualmente 
+das colunas: n_valovenda, n_descvenda e n_totavenda no intervalo de 01/01/2020 a 31/01/2020.
+
+select sum(n_valovenda) valor_venda,
+sum(n_descvenda) descontos,
+sum(n_totavenda) total_venda
+from comvenda
+where d_datavenda between '2020-01-01' and '2020-01-01';
