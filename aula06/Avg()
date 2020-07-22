@@ -1,0 +1,4 @@
+e se quisermos saber sua media, para comparar periodos de datas? NoMySQL temos o avg(), que busca a coluna cuja media voce deseja saber e realiza o calculo.
+
+select format(avg(n_totavenda),2)
+from comvenda;
