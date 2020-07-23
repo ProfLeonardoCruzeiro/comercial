@@ -1,0 +1,4 @@
+
+
+alter table comvende add n_porcvende float(10,2);
+alter table comvenda add n_vcomvenda float(10,2);
