@@ -1,0 +1,49 @@
+Para retornar a data, hora ou data/hora atual, existem algumas maneiras de se fazer:
+
+select curdate();
+
+now(): para retornar a data e a hora atual. Por exemplo:
+
+select now();
+
+sysdate(): igualmente ao now(), sua consulta retorna a data e a hora juntos. Por exemplo:
+
+select sysdate();
+
+curtime(): para retornar somente o horario atual. Por exemplo:
+
+select curtime();
+
+Podemos tambem retornar o intervalo entre duas datas:
+
+select datediff('2020-02-01 23:59:59','2020-01-01');
+
+E adicionar dias a uma data:
+
+select date_add('2020-01-01', interval 31 day);
+
+A funcao de selecionar o nome do dia da semana e muito util. Voce retornara o nome do dia da semana em vez de apenas a data com numeros, na tela para o seu usuario.
+
+select dayname('2020-06-23');
+
+Para retornar o dia do mes:
+
+select dayofmonth('2015-06-23');
+
+Extrair o ano de uma data:
+
+select extract(year from '2015-01-01');
+
+Extrair o ultimo dia do mes:
+
+select last_day('2015-02-01');
+
+Formatando datas
+
+Podemos fazer algumas formatacoes para apresentar as datas nas consultas.
+
+Um padrao de data que utilizaremos bastante e o EUR (DD.MM.YYYY),
+pois ele e parecido com o nosso. Porem, lembre-se que e apenas para formatarmos durantes nossas consultas. Veja o exemplo onde vamos formatar a data ‘2015-06-23’:
+
+select date_format('2020-06-23',get_format(date,'EUR'));
+
