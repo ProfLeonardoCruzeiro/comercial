@@ -1,0 +1,24 @@
+vamos multiplicar a quantidade de um
+produto de uma venda por seu valor. Assim, teremos o valor total de um item.
+
+select (n_qtdeivenda * n_valoivenda) multiplicação
+from comivenda
+where n_numeivenda = 4;
+
+Agora vamos somar todos os valores de produtos dos itens das vendas e dividir pelo numero de itens vendidos.
+
+select truncate((sum(n_valoivenda) /
+count(n_numeivenda)),2) divisão
+from comivenda;
+
+Utilizando o item de venda com o n_numeivenda igual a 4, vamos somar o valor do item com o valor do desconto:
+
+select (n_valoivenda + n_descivenda) adição
+from comivenda
+where n_numeivenda = 4;
+
+Fazendo o inverso, vamos subtrair o valor do desconto do item:
+
+select (n_valoivenda - n_descivenda) subtração
+from comivenda
+where n_numeivenda = 4;
