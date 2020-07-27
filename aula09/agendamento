@@ -1,0 +1,33 @@
+
+set global event_scheduler = on;
+
+
+
+delimiter $$
+create event processa_comissao
+on schedule every 1 week starts '2020-06-26 19:30:00'
+	   do 
+	     begin		           
+		   call processa_comissionamento( 
+		   	current_date() - interval 7 day, 
+			current_date(), @a );
+		 end 
+$$
+delimiter ;
+
+delimiter $$
+create event processa_comissao
+on schedule every 1 minute
+	   do 
+	     begin		           
+		   call processa_comissionamento( 
+		   	current_date() - interval 7 day, 
+			current_date(), @a );
+		 end 
+$$
+delimiter ;
+
+
+
+
+DROP EVENT IF EXISTS processa_comissao;
