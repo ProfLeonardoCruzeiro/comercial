@@ -1,0 +1,93 @@
+. Para realizar a nossa operação, devemos consultar o percentual da comissão do cadastro de vendedores para gerar o cálculo. 
+Colocando em prática o que já aprendemos, vamos criar uma function para ter esse percentual.
+
+
+
+delimiter $$
+create function rt_percentual_comissao(vn_n_numevende int)
+returns float deterministic
+begin
+	declare percentual_comissao float(10,2);
+	select n_porcvende
+	into percentual_comissao
+	from comvende
+	where n_numevende = vn_n_numevende;
+	return percentual_comissao;
+end;
+$$
+
+Vamos agora ao código para criar a trigger antes da inserção. Observe que vou utilizar o mesmo cálculo que usei na procedure.
+
+delimiter $$
+create trigger tri_vendas_bi
+	before insert on comvenda 
+	for each row
+
+begin
+	declare percentual_comissao float(10,2);
+    declare valor_comissao      float(10,2);
+		  
+	## busco o percentual de comissão que o vendedor deve
+	## receber
+	select rt_percentual_comissao(new.n_numevende)
+	into percentual_comissao;
+		  
+	## calculo a comissão
+	set valor_comissao = ((new.n_totavenda * percentual_comissao)  / 100);
+		  
+	## recebo no novo valor de comissão
+	set new.n_vcomvenda = valor_comissao;
+			
+	end
+$$		
+
+Agora, quando voce inserir um novo registro na tabela comvendas, o calculo do valor da comissao do vendedor vai ser realizado e o campo sera
+preenchido.
+
+insert into comvenda values
+(22	    ,	'22'	,	9	,	2	
+,	2 ,  '7975.96',	    0	,	
+'7975.96'   ,  '2020-06-26', 0);
+
+Agora, quando você inserir um novo registro na tabela comvendas, o cálculo do valor da comissão do vendedor vai ser realizado e
+o campo será preenchido. Porém, o valor total da venda pode ser alterado e, caso ocorra a inserção ou retirada de um item dela, o valor
+da comissão a ser paga ao vendedor também mudará. Por isso, devemos criar mais uma trigger
+na tabela comvendas para fazer um update nesse valor para quando isso acontecer. No lugar do insert, utilizaremos o update.
+
+
+delimiter $$
+create trigger tri_vendas_bu
+before update on comvenda 
+for each row
+
+begin
+declare percentual_comissao float(10,2);
+declare valor_comissao      float(10,2);
+			
+## No update, verifico se o valor total novo da venda
+## é diferente do total anterior, pois se forem iguais,
+## não há necessidade do cálculo
+
+if (old.n_totavenda <> new.n_totavenda) then
+	select rt_percentual_comissao(new.n_numevende)
+	into percentual_comissao;
+          
+## cálculo da comissão
+
+	set valor_comissao = ((new.n_totavenda * percentual_comissao) / 100);
+  
+## recebo no novo valor de comissão
+
+set new.n_vcomvenda = valor_comissao;
+end if;
+end
+$$
+
+
+Quando você alterar o valor total da venda, a comissão será gerada. Utilize os scripts que estão no arquivo triggers.sql no repositório para inserir e atualizar.
+
+update comvenda set n_totavenda = 8100.55
+where n_numevenda = 21;
+
+
+
