@@ -1,0 +1,118 @@
+Triggers after insert e after update
+
+Fizemos triggers para realizar o cálculo baseado no valor do total de vendas. Porém, estamos somando manualmente seus itens e inserindo no campo n_totavenda.
+Isso pode fazer com que algum erro ocorra, diferentemente de quando se insere a partir de uma aplicação; entretanto, podemos fazer com que esse cálculo seja 
+realizado automaticamente, utilizando uma trigger. 
+
+Desta vez, vamos usar os tipos after insert (depois de inserir) e after update (depois de alterar) na tabela comivenda (itens da venda), 
+para que, depois de inserir os produtos, o valor do seu total seja calculado e o campo n_totavenda seja atualizado.
+
+
+delimiter $$
+create trigger tri_vendas_ai
+after insert on comivenda 
+for each row
+begin
+
+## declaro as variáveis que utilizarei
+declare vtotal_itens float(10,2) default 0;
+declare total_item   float(10,2) default 0;
+declare fimLoop boolean default false;
+
+## cursor para buscar os itens já registrados da venda
+declare busca_itens cursor for
+select n_valoivenda
+from comivenda
+where n_numevenda = new.n_numevenda;
+			
+##Handler para encerrar o loop antes da última linha
+declare continue handler for
+sqlstate '02000' 
+set fimLoop = true;
+		
+## abro o cursor
+open busca_itens;
+## declaro e inicio o loop
+itens : loop
+fetch busca_itens into total_item;
+			
+#encerra o bloco quando o cursor não retornar mais linhas.
+if fimLoop then
+leave itens;
+end if;
+		  		  	
+## somo o valor total dos itens(produtos)
+set vtotal_itens = vtotal_itens + total_item;
+          
+end loop itens;
+          
+          
+close busca_itens;
+
+## atualizo o total da venda
+update comvenda set n_totavenda = vtotal_itens
+where n_numevenda = new.n_numevenda;
+
+end
+$$
+
+Com isso, ao inserir um registro na tabela de vendas, não precisamos preencher o campo n_totavenda, pois ele será preenchido automaticamente. 
+
+insert into comivenda values( 42 , 22,   5, 100  , 3,0  );
+
+Agora temos a mesma situação que tínhamos anteriormente, pois a tabela de itens da venda pode ser atualizada e, se isso ocorrer, o valor de seu total ficará incorreto. Por isso, devemos criar uma trigger que o atualizará se o valor do item for alterado; mas somente na condição de o novo ser diferente do antigo. Esse não sendo o caso, não é necessário executar os cálculos.
+
+delimiter $$
+create trigger tri_ivendas_au
+	   after update on comivenda 
+	   for each row
+	   begin
+	     ## declaro as variáveis que utilizarei
+	     declare vtotal_itens float(10,2) default 0;
+	     declare total_item  float(10,2) default 0;
+         declare fimLoop boolean default false;
+		 
+		 ## cursor para buscar os itens já registrados da venda
+		   declare busca_itens cursor for
+		   	select n_valoivenda
+		   	  from comivenda
+		   	 where n_numevenda = new.n_numevenda;
+		 
+		 ##Handler para encerrar o loop antes da última linha
+		   declare continue handler for
+			sqlstate '02000' 
+			set fimLoop = true;
+		
+		 
+	     ## verifico se há necessidade de alteração
+	     ## faço somente se o novo valor for alterado
+	     if new.n_valoivenda <> old.n_valoivenda then 
+
+		   ## abro o cursor
+		   open busca_itens;
+		     ## declaro e inicio o loop
+		     itens : loop
+             
+		     fetch busca_itens into total_item;
+			 
+#encerra o bloco quando o cursor não retornar mais linhas.
+			 if fimLoop then
+				leave itens;
+			 end if;
+			 
+## somo o valor total dos itens(produtos)
+		     set vtotal_itens = vtotal_itens + total_item;
+           
+		   end loop itens;
+
+           close busca_itens;
+           
+## atualizo o total da venda
+           update comvenda set n_totavenda = vtotal_itens
+            where n_numevenda = new.n_numevenda;
+           
+		 end if;
+	   end
+ $$
+
+UPDATE `comercial`.`comivenda` SET `n_valoivenda` = '5000' WHERE (`n_numeivenda` = '42');
